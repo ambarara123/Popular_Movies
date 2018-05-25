@@ -2,17 +2,35 @@ package com.example.popularmovies;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    private static TextView NEWText;
+    private RecyclerView gridRecyclerView;
+    private RecyclerAdapter recyclerAdapter;
+    //test case
+    int num = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        gridRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2
+        , LinearLayoutManager.VERTICAL,false);
+
+        gridRecyclerView.setLayoutManager(gridLayoutManager);
+        gridRecyclerView.setHasFixedSize(true);
+
+        recyclerAdapter = new RecyclerAdapter(num);
+
+        gridRecyclerView.setAdapter(recyclerAdapter);
 
 
 
