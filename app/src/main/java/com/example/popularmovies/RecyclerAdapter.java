@@ -10,24 +10,29 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
-
-    int numberOfItems;
-
-    public static final String IMAGE_URL_BASE_PATH = "https://image.tmdb.org/t/p/w342//";
-
 
     ItemListener listener;
     Context context;
+    public ArrayList<Movie> moviesList;
+    public ArrayList<String> images;
+
 
     public interface ItemListener{
-        void onItemClick(String data);
+        void onItemClick(int click);
     }
 
     //parameters will be changed later
-    public RecyclerAdapter(Context context,int numberOfItems) {
-        this.context = context;
-        this.numberOfItems = numberOfItems;
+
+    public RecyclerAdapter(ItemListener listener, ArrayList<Movie> moviesList, ArrayList<String> images) {
+       // this.context = context;
+        this.moviesList = moviesList;
+        this.images = images;
+        this.listener = listener;
+
+
     }
 
     @Override
@@ -44,13 +49,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.imgThumbnail.setImageResource(R.drawable.ic_launcher_background);
-
-        String url = IMAGE_URL_BASE_PATH ;
-
-        Picasso.get()
-                .load(url)
+        Picasso.get().
+                load(MainActivity.images.get(position))
                 .into(holder.imgThumbnail);
+
 
     }
 
@@ -59,7 +61,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public int getItemCount() {
         //to be updated
-        return numberOfItems;
+        return MainActivity.moviesList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -68,13 +70,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         public ViewHolder(View itemView) {
             super(itemView);
             imgThumbnail = (ImageView) itemView.findViewById(R.id.image_thumbnail);
+            itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-
-
+            listener.onItemClick(adapterPosition);
 
         }
     }
