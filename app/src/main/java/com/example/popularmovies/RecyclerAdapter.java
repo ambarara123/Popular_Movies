@@ -8,12 +8,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
     int numberOfItems;
 
+    public static final String IMAGE_URL_BASE_PATH = "https://image.tmdb.org/t/p/w342//";
 
-    public RecyclerAdapter(int numberOfItems) {
+
+    ItemListener listener;
+    Context context;
+
+    public interface ItemListener{
+        void onItemClick(String data);
+    }
+
+    //parameters will be changed later
+    public RecyclerAdapter(Context context,int numberOfItems) {
+        this.context = context;
         this.numberOfItems = numberOfItems;
     }
 
@@ -30,7 +43,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         holder.imgThumbnail.setImageResource(R.drawable.ic_launcher_background);
+
+        String url = IMAGE_URL_BASE_PATH ;
+
+        Picasso.get()
+                .load(url)
+                .into(holder.imgThumbnail);
 
     }
 
@@ -42,14 +62,23 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         return numberOfItems;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private ImageView imgThumbnail;
 
         public ViewHolder(View itemView) {
             super(itemView);
             imgThumbnail = (ImageView) itemView.findViewById(R.id.image_thumbnail);
         }
+
+        @Override
+        public void onClick(View v) {
+            int adapterPosition = getAdapterPosition();
+
+
+
+        }
     }
+
 
 
 }
