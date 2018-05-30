@@ -1,6 +1,5 @@
 package com.example.popularmovies;
 
-import java.util.List;
 
 public class Movie {
 
@@ -15,10 +14,7 @@ public class Movie {
     String original_language;
     String vote_average;
     String vote_count;
-    String tagline;
-    String status;
-    String runtime;
-    String revenue;
+
 
     public Movie(){
 
@@ -33,10 +29,7 @@ public class Movie {
         original_language="";
         vote_average="";
         vote_count="";
-        tagline="";
-        status="";
-        runtime="";
-        revenue="";
+
 
     }
 
@@ -128,35 +121,4 @@ public class Movie {
         this.vote_count = vote_count;
     }
 
-    public String getTagline() {
-        return tagline;
-    }
-
-    public void setTagline(String tagline) {
-        this.tagline = tagline;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getRuntime() {
-        return runtime;
-    }
-
-    public void setRuntime(String runtime) {
-        this.runtime = runtime;
-    }
-
-    public String getRevenue() {
-        return revenue;
-    }
-
-    public void setRevenue(String revenue) {
-        this.revenue = revenue;
-    }
 }

@@ -2,6 +2,7 @@ package com.example.popularmovies.utilities;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -81,6 +82,7 @@ public class GetMovie extends AsyncTask<String , Void , String> {
         super.onPostExecute(result);
         MainActivity.mProgressBar.setVisibility(View.GONE);
         MainActivity.gridRecyclerView.setVisibility(View.VISIBLE);
+        Log.d("result",result);
 
 
         if (MainActivity.connectionEnabled) {
@@ -100,6 +102,7 @@ public class GetMovie extends AsyncTask<String , Void , String> {
                     movieItem.setBackdrop_path(movie.getString("backdrop_path"));
                     movieItem.setOriginal_title(movie.getString("original_title"));
                     movieItem.setOriginal_language(movie.getString("original_language"));
+
                     if (movie.getString("overview") == "null") {
                         movieItem.setOverview("No Overview was Found");
                     } else {

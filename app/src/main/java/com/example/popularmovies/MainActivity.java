@@ -27,13 +27,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
 
     static public RecyclerAdapter recyclerAdapter;
     static public ProgressBar mProgressBar;
-    //test case
-    int num = 20;
-
-
-
     static public ArrayList<Movie> moviesList;
     static public ArrayList<String> images;
+
     public String mostPopular="http://api.themoviedb.org/3/movie/popular?api_key=7d9d6f64616fc8b37de4e6d7f90d864c";
     public String highRated="http://api.themoviedb.org/3/movie/top_rated?api_key=7d9d6f64616fc8b37de4e6d7f90d864c";
 
@@ -80,16 +76,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
             connectionEnabled = false;
         }
 
-
-
-
     }
 
     private void getJsonData(int i) {
         GetMovie movieDownload = new GetMovie(getApplicationContext());
 
         try {
-
 
             if (i == 0) {
                 movieDownload.execute(mostPopular);
@@ -143,8 +135,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
     }
 
 
-
-
     public void showProgress(){
         gridRecyclerView.setVisibility(View.INVISIBLE);
         mProgressBar.setVisibility(View.VISIBLE);
@@ -168,7 +158,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
         Log.d("Position",String.valueOf(click));
 
         Intent intent = new Intent(MainActivity.this,MovieActivity.class);
-        startActivity(intent);
+
         intent.putExtra("position",click);
+        startActivity(intent);
     }
 }
