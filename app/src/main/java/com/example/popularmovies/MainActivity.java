@@ -23,10 +23,10 @@ import com.example.popularmovies.utilities.GetMovie;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements RecyclerAdapter.ItemListener{
-    private RecyclerView gridRecyclerView;
+    static public RecyclerView gridRecyclerView;
 
     static public RecyclerAdapter recyclerAdapter;
-    ProgressBar mProgressBar;
+    static public ProgressBar mProgressBar;
     //test case
     int num = 20;
 
@@ -45,8 +45,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        gridRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
 
-
+        showProgress();
 
         String result="";
         moviesList=new ArrayList<>();
@@ -55,12 +57,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
 
 
         if (isNetworkAvailable() != false){
+            showRecyclerView();
             connectionEnabled = true;
             getJsonData(0);
             new GetMovie(this);
 
-            gridRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-            mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
 
             GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2
                     , LinearLayoutManager.VERTICAL,false);
@@ -145,13 +146,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
 
 
     public void showProgress(){
-        gridRecyclerView.setVisibility(View.GONE);
+        gridRecyclerView.setVisibility(View.INVISIBLE);
         mProgressBar.setVisibility(View.VISIBLE);
 
     }
     public void showRecyclerView(){
         gridRecyclerView.setVisibility(View.VISIBLE);
-        mProgressBar.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.INVISIBLE);
     }
 
     //to check that network is available or not

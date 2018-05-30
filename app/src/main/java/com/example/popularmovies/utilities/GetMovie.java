@@ -2,6 +2,7 @@ package com.example.popularmovies.utilities;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.popularmovies.MainActivity;
@@ -29,6 +30,8 @@ public class GetMovie extends AsyncTask<String , Void , String> {
 
     @Override
     protected void onPreExecute() {
+        MainActivity.gridRecyclerView.setVisibility(View.INVISIBLE);
+        MainActivity.mProgressBar.setVisibility(View.VISIBLE);
         super.onPreExecute();
     }
 
@@ -76,6 +79,8 @@ public class GetMovie extends AsyncTask<String , Void , String> {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
+        MainActivity.mProgressBar.setVisibility(View.GONE);
+        MainActivity.gridRecyclerView.setVisibility(View.VISIBLE);
 
 
         if (MainActivity.connectionEnabled) {
