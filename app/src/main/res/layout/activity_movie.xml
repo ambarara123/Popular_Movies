@@ -27,10 +27,9 @@
                     android:layout_gravity="center_vertical"
                     android:layout_margin="20dp"
                     android:fontFamily="cursive"
-                    android:text="Title: "
+                    android:text="@string/title"
                     android:textColor="@android:color/holo_red_dark"
                     android:textSize="40dp" />
-
 
             </FrameLayout>
 
@@ -58,42 +57,40 @@
                         android:id="@+id/txtReleaseDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Release date"
+                        android:text="@string/release_date"
                         android:textSize="25dp" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#000000" />
+                        android:background="@color/black" />
 
                     <TextView
                         android:id="@+id/txtDuration"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Duration"
+                        android:text="@string/duration"
                         android:textSize="25dp" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#000000" />
+                        android:background="@color/black" />
 
                     <TextView
                         android:id="@+id/txtUserRating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="UserRating"
+                        android:text="@string/userrating"
                         android:textSize="25dp" />
                 </LinearLayout>
             </LinearLayout>
-
-
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="cursive"
-                android:text="Description: "
+                android:text="@string/description"
                 android:textColor="@color/colorPrimary"
                 android:textSize="30dp" />
 
@@ -103,9 +100,6 @@
                 android:layout_height="wrap_content"
                 android:text="detail"
                 android:textSize="30dp" />
-
-
-
 
         </LinearLayout>
     </ScrollView>

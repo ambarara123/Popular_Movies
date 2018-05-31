@@ -99,9 +99,9 @@ public class GetMovie extends AsyncTask<String , Void , String> {
                     Movie movieItem = new Movie();
                     movieItem.setTitle(movie.getString("title"));
                     movieItem.setId(movie.getInt("id"));
-                    movieItem.setBackdrop_path(movie.getString("backdrop_path"));
-                    movieItem.setOriginal_title(movie.getString("original_title"));
-                    movieItem.setOriginal_language(movie.getString("original_language"));
+                    movieItem.setBackdropPath(movie.getString("backdrop_path"));
+                    movieItem.setOriginalTitle(movie.getString("original_title"));
+                    movieItem.setOriginalLanguage(movie.getString("original_language"));
 
                     if (movie.getString("overview") == "null") {
                         movieItem.setOverview("No Overview was Found");
@@ -109,16 +109,16 @@ public class GetMovie extends AsyncTask<String , Void , String> {
                         movieItem.setOverview(movie.getString("overview"));
                     }
                     if (movie.getString("release_date") == "null") {
-                        movieItem.setRelease_date("Unknown Release Date");
+                        movieItem.setReleaseDate("Unknown Release Date");
                     } else {
-                        movieItem.setRelease_date(movie.getString("release_date"));
+                        movieItem.setReleaseDate(movie.getString("release_date"));
                     }
                     movieItem.setPopularity(movie.getString("popularity"));
-                    movieItem.setVote_average(movie.getString("vote_average"));
-                    movieItem.setPoster_path(movie.getString("poster_path"));
+                    movieItem.setVoteAverage(movie.getString("vote_average"));
+                    movieItem.setPosterPath(movie.getString("poster_path"));
                     if (movie.getString("poster_path") == "null") {
                         MainActivity.images.add(APIStrings.IMAGE_NOT_FOUND);
-                        movieItem.setPoster_path(APIStrings.IMAGE_NOT_FOUND);
+                        movieItem.setPosterPath(APIStrings.IMAGE_NOT_FOUND);
                     } else {
                         MainActivity.images.add(APIStrings.IMAGE_URL + APIStrings.IMAGE_SIZE_185 + movie.getString("poster_path"));
                     }

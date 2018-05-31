@@ -38,10 +38,10 @@ public class MovieActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         int position = intent.getIntExtra("position", 0);
-        movieTitle.setText(MainActivity.moviesList.get(position).original_title);
+        movieTitle.setText(MainActivity.moviesList.get(position).originalTitle);
         movieDescription.setText(MainActivity.moviesList.get(position).overview);
-        movieRating.setText(MainActivity.moviesList.get(position).vote_average + "/10");
-        movieReleaseDate.setText(MainActivity.moviesList.get(position).release_date);
+        movieRating.setText(MainActivity.moviesList.get(position).voteAverage + "/10");
+        movieReleaseDate.setText(MainActivity.moviesList.get(position).releaseDate);
 
         Picasso.get().load(MainActivity.images.get(position)).into(moviePoster);
 
