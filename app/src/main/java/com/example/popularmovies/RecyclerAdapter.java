@@ -15,11 +15,10 @@ import java.util.ArrayList;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
     ItemListener listener;
-    Context context;
     public ArrayList<Movie> moviesList;
     public ArrayList<String> images;
 
-
+    //to be implemented in mainActivity
     public interface ItemListener{
         void onItemClick(int click);
     }
@@ -31,7 +30,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         this.moviesList = moviesList;
         this.images = images;
         this.listener = listener;
-
 
     }
 
@@ -48,15 +46,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
+        //loading images from passed url
         Picasso.get().
                 load(MainActivity.images.get(position))
                 .into(holder.imgThumbnail);
 
-
     }
-
-
 
     @Override
     public int getItemCount() {
@@ -77,10 +72,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             listener.onItemClick(adapterPosition);
-
         }
     }
-
-
 
 }

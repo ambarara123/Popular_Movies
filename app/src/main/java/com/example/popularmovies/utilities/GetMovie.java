@@ -32,13 +32,14 @@ public class GetMovie extends AsyncTask<String , Void , String> {
     @Override
     protected void onPreExecute() {
         MainActivity.gridRecyclerView.setVisibility(View.INVISIBLE);
-        MainActivity.mProgressBar.setVisibility(View.VISIBLE);
+        MainActivity.progressBar.setVisibility(View.VISIBLE);
         super.onPreExecute();
     }
 
     @Override
     protected String doInBackground(String... URLs) {
         HttpURLConnection connection = null;
+
         BufferedReader reader = null;
 
         try {
@@ -80,59 +81,43 @@ public class GetMovie extends AsyncTask<String , Void , String> {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
-        MainActivity.mProgressBar.setVisibility(View.GONE);
+        MainActivity.progressBar.setVisibility(View.GONE);
         MainActivity.gridRecyclerView.setVisibility(View.VISIBLE);
+        //to be removed after completing project
         Log.d("result",result);
 
-
-        if (MainActivity.connectionEnabled) {
+        if (MainActivity.connection) {
             MainActivity.moviesList = new ArrayList<>();
             MainActivity.images = new ArrayList<>();
 
             try {
-                JSONObject moviesObject = new JSONObject(result);
-                JSONArray moviesArray = moviesObject.getJSONArray("results");
-                final int numberOfMovies = moviesArray.length();
+                JSONObject movieObject = new JSONObject(result);
+                JSONArray moviesArray = movieObject.getJSONArray("results");
+                
+                for (int i = 0; i < moviesArray.length(); i++) {
+                    JSONObject JSONMovie = moviesArray.getJSONObject(i);
+                    Movie movie = new Movie();
+                    movie.setOriginalTitle(JSONMovie.getString("original_title"));
+                    movie.setOverview(JSONMovie.getString("overview"));
+                    movie.setReleaseDate(JSONMovie.getString("release_date"));
+                    movie.setVoteAverage(JSONMovie.getString("vote_average"));
+                    movie.setPosterPath(JSONMovie.getString("poster_path"));
 
-                for (int i = 0; i < numberOfMovies; i++) {
-                    JSONObject movie = moviesArray.getJSONObject(i);
-                    Movie movieItem = new Movie();
-                    movieItem.setTitle(movie.getString("title"));
-                    movieItem.setId(movie.getInt("id"));
-                    movieItem.setBackdropPath(movie.getString("backdrop_path"));
-                    movieItem.setOriginalTitle(movie.getString("original_title"));
-                    movieItem.setOriginalLanguage(movie.getString("original_language"));
+                    MainActivity.images.add(UTILs.IMAGE_URL +
+                            UTILs.IMAGE_SIZE +
+                            JSONMovie.getString("poster_path"));
 
-                    if (movie.getString("overview") == "null") {
-                        movieItem.setOverview("No Overview was Found");
-                    } else {
-                        movieItem.setOverview(movie.getString("overview"));
-                    }
-                    if (movie.getString("release_date") == "null") {
-                        movieItem.setReleaseDate("Unknown Release Date");
-                    } else {
-                        movieItem.setReleaseDate(movie.getString("release_date"));
-                    }
-                    movieItem.setPopularity(movie.getString("popularity"));
-                    movieItem.setVoteAverage(movie.getString("vote_average"));
-                    movieItem.setPosterPath(movie.getString("poster_path"));
-                    if (movie.getString("poster_path") == "null") {
-                        MainActivity.images.add(APIStrings.IMAGE_NOT_FOUND);
-                        movieItem.setPosterPath(APIStrings.IMAGE_NOT_FOUND);
-                    } else {
-                        MainActivity.images.add(APIStrings.IMAGE_URL + APIStrings.IMAGE_SIZE_185 + movie.getString("poster_path"));
-                    }
-                    MainActivity.moviesList.add(movieItem);
+                    MainActivity.moviesList.add(movie);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
+            //notify dataset changed
             MainActivity.recyclerAdapter.notifyDataSetChanged();
         }
+        //if no network found
         else{
 
-            //network is not working
             Toast.makeText(context, "Please Connect to a Network", Toast.LENGTH_LONG).show();
         }
     }

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_margin="10dp"
+    android:layout_marginLeft="10dp"
     tools:context=".MovieActivity">
 
     <ScrollView
@@ -29,7 +29,7 @@
                     android:fontFamily="cursive"
                     android:text="@string/title"
                     android:textColor="@android:color/holo_red_dark"
-                    android:textSize="40dp" />
+                    android:textSize="40sp" />
 
             </FrameLayout>
 
@@ -58,23 +58,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/release_date"
-                        android:textSize="25dp" />
+                        android:textSize="25sp" />
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/black" />
-
-                    <TextView
-                        android:id="@+id/txtDuration"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/duration"
-                        android:textSize="25dp" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="2dp"
                         android:background="@color/black" />
 
                     <TextView
@@ -82,7 +70,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/userrating"
-                        android:textSize="25dp" />
+                        android:textSize="25sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -92,14 +80,14 @@
                 android:fontFamily="cursive"
                 android:text="@string/description"
                 android:textColor="@color/colorPrimary"
-                android:textSize="30dp" />
+                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/txtDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="detail"
-                android:textSize="30dp" />
+                android:textSize="30sp" />
 
         </LinearLayout>
     </ScrollView>

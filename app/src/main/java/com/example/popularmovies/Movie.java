@@ -3,32 +3,26 @@ package com.example.popularmovies;
 
 public class Movie {
 
-    int    id;
+    int id;
     String title;
     String originalTitle;
     String overview;
     String popularity;
     String releaseDate;
     String posterPath;
-    String backdropPath;
-    String originalLanguage;
     String voteAverage;
-    String voteCount;
-
 
     public Movie(){
-
+        //initialising all the variables
         id=0;
         title="";
         originalTitle="";
-        overview="";
-        popularity="";
         releaseDate="";
         posterPath="";
-        backdropPath="";
-        originalLanguage="";
         voteAverage="";
-        voteCount="";
+        overview="";
+        popularity="";
+
 
 
     }
@@ -57,22 +51,6 @@ public class Movie {
         this.originalTitle = originalTitle;
     }
 
-    public String getOverview() {
-        return overview;
-    }
-
-    public void setOverview(String overview) {
-        this.overview = overview;
-    }
-
-    public String getPopularity() {
-        return popularity;
-    }
-
-    public void setPopularity(String popularity) {
-        this.popularity = popularity;
-    }
-
     public String getReleaseDate() {
         return releaseDate;
     }
@@ -89,22 +67,6 @@ public class Movie {
         this.posterPath = posterPath;
     }
 
-    public String getBackdropPath() {
-        return backdropPath;
-    }
-
-    public void setBackdropPath(String backdropPath) {
-        this.backdropPath = backdropPath;
-    }
-
-    public String getOriginalLanguage() {
-        return originalLanguage;
-    }
-
-    public void setOriginalLanguage(String originalLanguage) {
-        this.originalLanguage = originalLanguage;
-    }
-
     public String getVoteAverage() {
         return voteAverage;
     }
@@ -113,11 +75,21 @@ public class Movie {
         this.voteAverage = voteAverage;
     }
 
-    public String getVoteCount() {
-        return voteCount;
+    public String getOverview() {
+        return overview;
     }
 
-    public void setVoteCount(String voteCount) {
-        this.voteCount = voteCount;
+    public void setOverview(String overview) {
+        this.overview = overview;
     }
+
+    public String getPopularity() {
+        return popularity;
+    }
+
+    public void setPopularity(String popularity) {
+        this.popularity = popularity;
+    }
+
+
 }

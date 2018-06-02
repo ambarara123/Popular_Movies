@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,76 +14,65 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.popularmovies.utilities.APIStrings;
 import com.example.popularmovies.utilities.GetMovie;
+import com.example.popularmovies.utilities.UTILs;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements RecyclerAdapter.ItemListener{
-    static public RecyclerView gridRecyclerView;
+public class MainActivity extends AppCompatActivity implements RecyclerAdapter.ItemListener {
 
-    static public RecyclerAdapter recyclerAdapter;
-    static public ProgressBar mProgressBar;
-    static public ArrayList<Movie> moviesList;
-    static public ArrayList<String> images;
-    public static boolean connectionEnabled;
+    //declaring variables
+    public static RecyclerView gridRecyclerView;
+    public static RecyclerAdapter recyclerAdapter;
+    public static ProgressBar progressBar;
+    public static ArrayList<Movie> moviesList;
+    public static ArrayList<String> images;
+    public static boolean connection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         gridRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        moviesList = new ArrayList<>();
+        images = new ArrayList<>();
 
+        recyclerAdapter = new RecyclerAdapter(this, moviesList, images);
         showProgress();
 
-        moviesList=new ArrayList<>();
-        images=new ArrayList<>();
-
-        if (isNetworkAvailable() != false){
+        //if no network problem
+        if (isNetworkAvailable() != false) {
             showRecyclerView();
-            connectionEnabled = true;
-            getJsonData();
-            new GetMovie(this);
+            connection = true;
+            //
+            GetMovie movieDownload = new GetMovie(this);
+            movieDownload.execute(UTILs.API_URL + UTILs.API_KEY);
 
-
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2
-                    , LinearLayoutManager.VERTICAL,false);
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2
+                    , LinearLayoutManager.VERTICAL, false);
 
             gridRecyclerView.setLayoutManager(gridLayoutManager);
             gridRecyclerView.setHasFixedSize(true);
 
-            recyclerAdapter = new RecyclerAdapter(this,moviesList,images);
-
             gridRecyclerView.setAdapter(recyclerAdapter);
 
-        }else {
+        } else {
+            //TODO[1]: to cancel previous toast to display new one
             Toast.makeText(this, "Please Connect to a network", Toast.LENGTH_SHORT).show();
-            connectionEnabled = false;
+            connection = false;
         }
 
     }
 
-    private void getJsonData() {
-        GetMovie movieDownload = new GetMovie(getApplicationContext());
 
-        try {
-                movieDownload.execute(APIStrings.API_URL+APIStrings.API_KEY);
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-    }
     //doing sort menu related stuff
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //inflating menu item
-        getMenuInflater().inflate(R.menu.sort,menu);
+        getMenuInflater().inflate(R.menu.sort, menu);
         return true;
     }
 
@@ -94,24 +81,24 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
         //getting id of menu items
         int id = item.getItemId();
 
-        if (id == R.id.action_popular){
+        if (id == R.id.action_popular) {
             //popular sort coding will done here
-            if (isNetworkAvailable()!=false){
-                new GetMovie(getApplicationContext()).execute(APIStrings.MOST_POPULAR+APIStrings.API_KEY);
+            if (isNetworkAvailable() != false) {
+                new GetMovie(getApplicationContext()).execute(UTILs.MOST_POPULAR + UTILs.API_KEY);
                 //to notify data set changed
                 recyclerAdapter.notifyDataSetChanged();
-            }
-            else {
+            } else {
+
                 Toast.makeText(this, "Please Connect to a network", Toast.LENGTH_SHORT).show();
             }
-        }else if (id== R.id.acrion_highestrated){
+        } else if (id == R.id.acrion_highestrated) {
             //highest rated coding will be done here
-            if (isNetworkAvailable()!=false){
-                new GetMovie(getApplicationContext()).execute(APIStrings.HIGH_RATED+ APIStrings.API_KEY);
+            if (isNetworkAvailable() != false) {
+                new GetMovie(getApplicationContext()).execute(UTILs.HIGH_RATED + UTILs.API_KEY);
                 //to notify data set changed
                 recyclerAdapter.notifyDataSetChanged();
-            }
-            else {
+            } else {
+
                 Toast.makeText(this, "Please Connect to a network", Toast.LENGTH_SHORT).show();
 
             }
@@ -120,17 +107,18 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
     }
 
 
-    public void showProgress(){
+    private void showProgress() {
         gridRecyclerView.setVisibility(View.INVISIBLE);
-        mProgressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
     }
-    public void showRecyclerView(){
+
+    private void showRecyclerView() {
         gridRecyclerView.setVisibility(View.VISIBLE);
-        mProgressBar.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
     //to check that network is available or not
-    public boolean isNetworkAvailable() {
+    private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
@@ -140,11 +128,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
     @Override
     public void onItemClick(int click) {
 
-        Log.d("Position",String.valueOf(click));
+        Log.d("Position", String.valueOf(click));
+        //going to movie activity
+        Intent intent = new Intent(MainActivity.this, MovieActivity.class);
 
-        Intent intent = new Intent(MainActivity.this,MovieActivity.class);
-
-        intent.putExtra("position",click);
+        intent.putExtra("position", click);
         startActivity(intent);
     }
 
