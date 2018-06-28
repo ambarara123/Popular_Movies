@@ -16,8 +16,16 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.example.popularmovies.utilities.GetMovie;
 import com.example.popularmovies.utilities.UTILs;
+import com.example.popularmovies.utilities.VolleySingleton;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -43,13 +51,18 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
         recyclerAdapter = new RecyclerAdapter(this, moviesList, images);
         showProgress();
 
+
+
+
         //if no network problem
         if (isNetworkAvailable() != false) {
             showRecyclerView();
             connection = true;
             //
-            GetMovie movieDownload = new GetMovie(this);
-            movieDownload.execute(UTILs.API_URL + UTILs.API_KEY);
+           // GetMovie movieDownload = new GetMovie(this);
+           // movieDownload.execute(UTILs.API_URL + UTILs.API_KEY);
+            volleyRequest(getApplicationContext(),UTILs.API_URL+UTILs.API_KEY);
+
 
             GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2
                     , LinearLayoutManager.VERTICAL, false);
@@ -60,8 +73,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
             gridRecyclerView.setAdapter(recyclerAdapter);
 
         } else {
-            //TODO[1]: to cancel previous toast to display new one
-            Toast.makeText(this, "Please Connect to a network", Toast.LENGTH_SHORT).show();
+
+            noNetworkToast();
             connection = false;
         }
 
@@ -84,23 +97,23 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
         if (id == R.id.action_popular) {
             //popular sort coding will done here
             if (isNetworkAvailable() != false) {
-                new GetMovie(getApplicationContext()).execute(UTILs.MOST_POPULAR + UTILs.API_KEY);
+                //new GetMovie(getApplicationContext()).execute(UTILs.MOST_POPULAR + UTILs.API_KEY);
+                volleyRequest(getApplicationContext(),UTILs.MOST_POPULAR+UTILs.API_KEY);
                 //to notify data set changed
                 recyclerAdapter.notifyDataSetChanged();
             } else {
-
-                Toast.makeText(this, "Please Connect to a network", Toast.LENGTH_SHORT).show();
+                noNetworkToast();
             }
         } else if (id == R.id.acrion_highestrated) {
             //highest rated coding will be done here
             if (isNetworkAvailable() != false) {
-                new GetMovie(getApplicationContext()).execute(UTILs.HIGH_RATED + UTILs.API_KEY);
+               // new GetMovie(getApplicationContext()).execute(UTILs.HIGH_RATED+UTILs.API_KEY);
+                volleyRequest(getApplicationContext(),UTILs.HIGH_RATED+UTILs.API_KEY);
                 //to notify data set changed
                 recyclerAdapter.notifyDataSetChanged();
             } else {
 
-                Toast.makeText(this, "Please Connect to a network", Toast.LENGTH_SHORT).show();
-
+               noNetworkToast();
             }
         }
         return super.onOptionsItemSelected(item);
@@ -121,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
@@ -134,6 +148,73 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
 
         intent.putExtra("position", click);
         startActivity(intent);
+    }
+
+
+    public void noNetworkToast(){
+
+        Toast.makeText(this, "Please Connect to a network", Toast.LENGTH_SHORT).show();
+
+    }
+
+
+    public void volleyRequest(final Context context,String url){
+        //using volley instead of assync task to avoid small problems
+        progressBar.setVisibility(View.VISIBLE);
+        gridRecyclerView.setVisibility(View.INVISIBLE);
+        StringRequest request = new StringRequest(url, new Response.Listener<String>() {
+
+
+            @Override
+            public void onResponse(String response) {
+                MainActivity.progressBar.setVisibility(View.INVISIBLE);
+                MainActivity.gridRecyclerView.setVisibility(View.VISIBLE);
+                //to be removed after completing project
+                Log.d("result",response);
+
+                if (MainActivity.connection) {
+                    MainActivity.moviesList = new ArrayList<>();
+                    MainActivity.images = new ArrayList<>();
+
+                    try {
+                        JSONObject movieObject = new JSONObject(response);
+                        JSONArray moviesArray = movieObject.getJSONArray("results");
+
+                        for (int i = 0; i < moviesArray.length(); i++) {
+                            JSONObject JSONMovie = moviesArray.getJSONObject(i);
+                            Movie movie = new Movie();
+                            movie.setOriginalTitle(JSONMovie.getString("original_title"));
+                            movie.setOverview(JSONMovie.getString("overview"));
+                            movie.setReleaseDate(JSONMovie.getString("release_date"));
+                            movie.setVoteAverage(JSONMovie.getString("vote_average"));
+                            movie.setPosterPath(JSONMovie.getString("poster_path"));
+
+                            MainActivity.images.add(UTILs.IMAGE_URL +
+                                    UTILs.IMAGE_SIZE +
+                                    JSONMovie.getString("poster_path"));
+
+                            MainActivity.moviesList.add(movie);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    //notify dataset changed
+                    MainActivity.recyclerAdapter.notifyDataSetChanged();
+                }
+                //if no network found
+                else{
+
+                    Toast.makeText(context, "Please Connect to a Network", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, error.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(request,"req");
     }
 
 }
