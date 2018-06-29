@@ -31,6 +31,17 @@
                     android:textColor="@android:color/holo_red_dark"
                     android:textSize="40sp" />
 
+                <ImageView
+                    android:id="@+id/favButton"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="right"
+                    android:background="@drawable/favorite_off"
+                    android:foregroundGravity="center_vertical"
+                    />
+
+
+
             </FrameLayout>
 
             <LinearLayout
@@ -89,8 +100,33 @@
                 android:text="detail"
                 android:textSize="30sp" />
 
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/trailerRecycler"></android.support.v7.widget.RecyclerView>
+
+            <ProgressBar
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/movieProgress"
+                android:layout_gravity="center_horizontal"
+                android:visibility="invisible"/>
+            <ProgressBar
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/movieProgress2"
+                android:layout_gravity="center_horizontal"
+                android:visibility="invisible"/>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/reviewRecycler"></android.support.v7.widget.RecyclerView>
+
+
+
         </LinearLayout>
     </ScrollView>
-
 
 </LinearLayout>

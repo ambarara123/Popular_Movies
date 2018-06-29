@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
             //
            // GetMovie movieDownload = new GetMovie(this);
            // movieDownload.execute(UTILs.API_URL + UTILs.API_KEY);
-            volleyRequest(getApplicationContext(),UTILs.API_URL+UTILs.API_KEY);
+            volleyRequest(getApplicationContext(),UTILs.API_URL+UTILs.API_KEY+"&language=en-US");
 
 
             GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2
@@ -147,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
         Intent intent = new Intent(MainActivity.this, MovieActivity.class);
 
         intent.putExtra("position", click);
+
         startActivity(intent);
     }
 
@@ -183,21 +184,25 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
                         for (int i = 0; i < moviesArray.length(); i++) {
                             JSONObject JSONMovie = moviesArray.getJSONObject(i);
                             Movie movie = new Movie();
+                            movie.setId(JSONMovie.getInt("id"));
                             movie.setOriginalTitle(JSONMovie.getString("original_title"));
                             movie.setOverview(JSONMovie.getString("overview"));
                             movie.setReleaseDate(JSONMovie.getString("release_date"));
                             movie.setVoteAverage(JSONMovie.getString("vote_average"));
                             movie.setPosterPath(JSONMovie.getString("poster_path"));
 
+
                             MainActivity.images.add(UTILs.IMAGE_URL +
                                     UTILs.IMAGE_SIZE +
                                     JSONMovie.getString("poster_path"));
+
 
                             MainActivity.moviesList.add(movie);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
                     //notify dataset changed
                     MainActivity.recyclerAdapter.notifyDataSetChanged();
                 }
