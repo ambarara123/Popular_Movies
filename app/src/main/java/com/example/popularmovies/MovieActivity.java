@@ -63,7 +63,7 @@ public class MovieActivity extends AppCompatActivity {
     String reviewUrl;
     String trailerUrl;
 
-    FavouriteDatabase database;
+    public static FavouriteDatabase database;
 
     ViewModel viewModel;
 
@@ -134,7 +134,7 @@ public class MovieActivity extends AppCompatActivity {
         favButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FavouriteEntity favouriteEntity = new FavouriteEntity(movie_id,title);
+                FavouriteEntity favouriteEntity = new FavouriteEntity(movie_id,title,MainActivity.images.get(position));
 
 /*
                 if (checkIfIdExist(favouriteEntity) == 0){

@@ -76,6 +76,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
 
             noNetworkToast();
             connection = false;
+//            startActivity(new Intent(MainActivity.this,FavouriteActivity.class));
+//            finish();
         }
 
     }

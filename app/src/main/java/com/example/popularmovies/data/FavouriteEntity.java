@@ -13,18 +13,28 @@ public class FavouriteEntity {
     @ColumnInfo(name = "movie_id")
     int movieId;
     String moviename;
-
+    String image;
 
     @Ignore
-    public FavouriteEntity(int movieId, String moviename) {
+    public FavouriteEntity(int movieId, String moviename, String image) {
         this.movieId = movieId;
         this.moviename = moviename;
+        this.image = image;
     }
 
-    public FavouriteEntity(int id, int movieId, String moviename) {
+    public FavouriteEntity(int id, int movieId, String moviename, String image) {
         this.id = id;
         this.movieId = movieId;
         this.moviename = moviename;
+        this.image = image;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public int getId() {

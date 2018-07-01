@@ -2,6 +2,7 @@ package com.example.popularmovies;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,7 +21,7 @@ public class FavouriteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_favourite);
 
         favRecycler = (RecyclerView) findViewById(R.id.favRecyclerView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        GridLayoutManager layoutManager = new GridLayoutManager(this,2);
         favRecycler.setLayoutManager(layoutManager);
 
         favAdapter = new FavouriteAdapter(this);

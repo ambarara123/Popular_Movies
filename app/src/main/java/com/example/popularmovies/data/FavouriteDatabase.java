@@ -6,7 +6,7 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.util.Log;
 
-@Database(entities = {FavouriteEntity.class},version = 1,exportSchema = false)
+@Database(entities = {FavouriteEntity.class},version = 2,exportSchema = false)
 public abstract class FavouriteDatabase extends RoomDatabase {
 
     private static final Object LOCK = new Object();
@@ -25,6 +25,7 @@ public abstract class FavouriteDatabase extends RoomDatabase {
                         .build();
             }
         }
+        //to know which class is instantiating database
         Log.d(context.getClass().getSimpleName(),"getting database instance");
 
         return instance;
