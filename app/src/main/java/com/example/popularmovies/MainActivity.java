@@ -115,6 +115,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
 
                noNetworkToast();
             }
+        }else {
+            startActivity(new Intent(MainActivity.this,FavouriteActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

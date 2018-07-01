@@ -10,5 +10,10 @@
         android:id="@+id/acrion_highestrated"
         android:orderInCategory="2"
         />
+    <item
+        android:title="Favourites"
+        android:id="@+id/action_fav"
+        android:orderInCategory="3"
+        />
 
 </menu>
