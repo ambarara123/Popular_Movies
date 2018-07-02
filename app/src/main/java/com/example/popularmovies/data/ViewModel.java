@@ -17,33 +17,11 @@ public class ViewModel extends AndroidViewModel {
         super(application);
         database = FavouriteDatabase.getInstance(this.getApplication());
 
-        //tasks = database.favouriteDao().getFavourite();
+        tasks = database.favouriteDao().getFavourite();
     }
-
 
     public LiveData<List<FavouriteEntity>> getFavourite() {
         return tasks;
     }
 
-    public void deleteItem(FavouriteEntity favouriteEntity) {
-        new deleteFavourite(database).execute(favouriteEntity);
-    }
-
-    private static class deleteFavourite extends AsyncTask<FavouriteEntity, Void, Void> {
-
-        private FavouriteDatabase mDatabase;
-
-        deleteFavourite(FavouriteDatabase database) {
-            this.mDatabase = database;
-        }
-
-        @Override
-        protected Void doInBackground(final FavouriteEntity... params) {
-
-            mDatabase.favouriteDao().deleteFav(params[0]);
-
-            return null;
-        }
-
-    }
 }

@@ -14,7 +14,7 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface FavouriteDao {
     @Query("SELECT * FROM favourite")
-    List<FavouriteEntity> getFavourite();
+    LiveData<List<FavouriteEntity>> getFavourite();
 
     @Insert
     void insertFav(FavouriteEntity favouriteEntity);

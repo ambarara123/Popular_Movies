@@ -121,12 +121,25 @@ public class MovieActivity extends AppCompatActivity {
         Picasso.get().load(MainActivity.images.get(position)).into(moviePoster);
 
 
-        if (database.favouriteDao().getFavByID(movie_id).isEmpty()){
 
-            favButton.setImageResource(R.drawable.favorite_off);
-        }else {
-            favButton.setImageResource(R.drawable.favorite_on);
-        }
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (database.favouriteDao().getFavByID(movie_id).isEmpty()){
+
+                            favButton.setImageResource(R.drawable.favorite_off);
+                        }else {
+                            favButton.setImageResource(R.drawable.favorite_on);
+                        }
+                    }
+                });
+            }
+        });
+
 
 
 
@@ -134,7 +147,7 @@ public class MovieActivity extends AppCompatActivity {
         favButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FavouriteEntity favouriteEntity = new FavouriteEntity(movie_id,title,MainActivity.images.get(position));
+                final FavouriteEntity favouriteEntity = new FavouriteEntity(movie_id,title,MainActivity.images.get(position));
 
 /*
                 if (checkIfIdExist(favouriteEntity) == 0){
@@ -144,14 +157,39 @@ public class MovieActivity extends AppCompatActivity {
                 }*/
 
                if (database.favouriteDao().getFavByID(movie_id).isEmpty()){
-                   database.favouriteDao().insertFav(favouriteEntity);
-                   favButton.setImageResource(R.drawable.favorite_on);
-                   Toast.makeText(MovieActivity.this, "added to favourites", Toast.LENGTH_SHORT).show();
+                   AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                       @Override
+                       public void run() {
+                           database.favouriteDao().insertFav(favouriteEntity);
+                           runOnUiThread(new Runnable() {
+                               @Override
+                               public void run() {
+                                   favButton.setImageResource(R.drawable.favorite_on);
+                                   Toast.makeText(MovieActivity.this, "added to favourites", Toast.LENGTH_SHORT).show();
+
+                               }
+                           });
+
+                       }
+                   });
 
                }else {
-                   database.favouriteDao().deleteFavById(movie_id);
-                   Toast.makeText(MovieActivity.this, "Deleted from Favourites", Toast.LENGTH_SHORT).show();
-                   favButton.setImageResource(R.drawable.favorite_off);
+                   AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                       @Override
+                       public void run() {
+                           database.favouriteDao().deleteFavById(movie_id);
+                           runOnUiThread(new Runnable() {
+                               @Override
+                               public void run() {
+                                   favButton.setImageResource(R.drawable.favorite_off);
+                                   Toast.makeText(MovieActivity.this, "Deleted from Favourites", Toast.LENGTH_SHORT).show();
+
+                               }
+                           });
+
+                       }
+                   });
+
                }
 
 

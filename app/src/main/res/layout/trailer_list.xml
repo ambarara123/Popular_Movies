@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/trailerView"
+    android:layout_height="wrap_content"
     android:layout_width="match_parent"
+    android:orientation="horizontal"
+    >
+<android.support.v7.widget.CardView
+    android:id="@+id/trailerView"
+    android:layout_width="wrap_content"
+
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     app:cardCornerRadius="3dp"
     app:cardElevation="5dp"
     app:cardBackgroundColor="@android:color/holo_red_light"
-    android:orientation="vertical">
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/trailerName"
@@ -16,6 +26,22 @@
         android:layout_height="wrap_content"
         android:text="Trailer"
         android:textColor="#000000"
-        android:textSize="30dp" />
+        android:textSize="30dp"
+        android:layout_marginRight="50dp"/>
+
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/shareImage"
+        android:layout_alignParentRight="true"
+        android:src="@mipmap/share_image"
+        android:layout_toRightOf="@+id/favCard"/>
+
+    </RelativeLayout>
+
+
 
 </android.support.v7.widget.CardView>
+
+
+</RelativeLayout>

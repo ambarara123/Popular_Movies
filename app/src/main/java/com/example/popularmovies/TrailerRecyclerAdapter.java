@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -59,6 +60,17 @@ public class TrailerRecyclerAdapter extends RecyclerView.Adapter<TrailerRecycler
                     context.startActivity(youtubeIntent);
                 }
             });
+
+        holder.shareImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(android.content.Intent.EXTRA_TEXT, youtubeUrl);
+                context.startActivity(Intent.createChooser(intent, "share via"));
+            }
+        });
     }
 
     @Override
@@ -68,15 +80,18 @@ Log.d("length",String.valueOf(trailers.size()));
 
     }
 
+
     public class TrailerViewHolder extends RecyclerView.ViewHolder{
 
         TextView trailerName;
         CardView trailerLayout;
+        ImageButton shareImage;
 
         public TrailerViewHolder(View itemView) {
             super(itemView);
             trailerName = itemView.findViewById(R.id.trailerName);
             trailerLayout = itemView.findViewById(R.id.trailerView);
+            shareImage = itemView.findViewById( R.id.shareImage);
         }
     }
 

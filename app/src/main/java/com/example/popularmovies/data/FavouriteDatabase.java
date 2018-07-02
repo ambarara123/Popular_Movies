@@ -26,7 +26,7 @@ public abstract class FavouriteDatabase extends RoomDatabase {
             }
         }
         //to know which class is instantiating database
-        Log.d(context.getClass().getSimpleName(),"getting database instance");
+        Log.d("database","getting database instance");
 
         return instance;
     }

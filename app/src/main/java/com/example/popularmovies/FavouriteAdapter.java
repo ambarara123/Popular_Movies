@@ -2,6 +2,7 @@ package com.example.popularmovies;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,12 +52,20 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
                 final int movieId = favList.get(position).getMovieId();
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Delete Favourite")
-                        .setMessage("Do you want to delete this from favourite")
+                        .setMessage("Do you want to delete this from favourite?")
                         .setCancelable(true)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                database.favouriteDao().deleteFavById(movieId);
+                                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        database.favouriteDao().deleteFavById(movieId);
+
+                                    }
+                                });
+
+                                //remove that row from favourite list
                                 favList.remove(position);
                                 notifyDataSetChanged();
                                 Toast.makeText(context, "Deleted from favourites", Toast.LENGTH_SHORT).show();
@@ -72,6 +82,10 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
 
             }
         });
+
+
+
+
 
     }
 
@@ -102,6 +116,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
             movieName = (TextView) itemView.findViewById(R.id.favMovieId);
             favImage = (ImageView) itemView.findViewById(R.id.favImage);
             cardView = (CardView) itemView.findViewById(R.id.favCard);
+
         }
     }
 }
