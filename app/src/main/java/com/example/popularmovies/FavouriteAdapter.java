@@ -32,6 +32,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View view = layoutInflater.inflate(R.layout.fav_list,parent,false);
         ViewHolder viewHolder = new ViewHolder(view);
@@ -44,15 +45,15 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
 
         holder.movieName.setText(favList.get(position).getMoviename());
         Picasso.get().load(favList.get(position).getImage()).into(holder.favImage);
-
+        //delete from favlist on long clicking on card
         holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                final FavouriteDatabase database = FavouriteDatabase.getInstance(context);
+
                 final int movieId = favList.get(position).getMovieId();
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Delete Favourite")
-                        .setMessage("Do you want to delete this from favourite?")
+                builder.setTitle(R.string.deleteFav)
+                        .setMessage(R.string.delete_message)
                         .setCancelable(true)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
@@ -60,7 +61,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
                                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                                     @Override
                                     public void run() {
-                                        database.favouriteDao().deleteFavById(movieId);
+                                        FavouriteDatabase.getInstance(context).favouriteDao().deleteFavById(movieId);
 
                                     }
                                 });
@@ -83,9 +84,21 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
             }
         });
 
-
-
-
+        //to open detail view
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context,FavouriteDetail.class);
+                //intent.putExtra("favActivity","fromFav");
+                intent.putExtra("movie_id",favList.get(position).getMovieId());
+                intent.putExtra("title",favList.get(position).getMoviename());
+                intent.putExtra("image_url",favList.get(position).getImage());
+                intent.putExtra("description",favList.get(position).getDescription());
+                intent.putExtra("date",favList.get(position).getReleaseDate());
+                intent.putExtra("rating",favList.get(position).getVoteAverage());
+                context.startActivity(intent);
+            }
+        });
 
     }
 

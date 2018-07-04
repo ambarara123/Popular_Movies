@@ -6,7 +6,7 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.util.Log;
 
-@Database(entities = {FavouriteEntity.class},version = 2,exportSchema = false)
+@Database(entities = {FavouriteEntity.class},version = 4,exportSchema = false)
 public abstract class FavouriteDatabase extends RoomDatabase {
 
     private static final Object LOCK = new Object();
@@ -15,17 +15,18 @@ public abstract class FavouriteDatabase extends RoomDatabase {
 
     public static FavouriteDatabase getInstance(Context context) {
         if (instance == null) {
-
+            //only one instance at a time
             synchronized (LOCK) {
 
                 instance = Room.databaseBuilder(context.getApplicationContext(),
                         FavouriteDatabase.class,
                         FavouriteDatabase.DATABASE_NAME)
-                        .allowMainThreadQueries()
+                        //no task allowed in background thread
+                       // .allowMainThreadQueries()
                         .build();
             }
         }
-        //to know which class is instantiating database
+        //to know that database is being instantiating
         Log.d("database","getting database instance");
 
         return instance;

@@ -13,6 +13,7 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
 @Dao
 public interface FavouriteDao {
+    //getting live data list from this
     @Query("SELECT * FROM favourite")
     LiveData<List<FavouriteEntity>> getFavourite();
 
@@ -24,10 +25,14 @@ public interface FavouriteDao {
 
     @Update(onConflict = REPLACE)
     void updateFav(FavouriteEntity favouriteEntity);
-
+    //get row of specific movie id
     @Query("SELECT * FROM favourite WHERE movie_id = :id")
-    List<FavouriteEntity> getFavByID(int id);
+    List<FavouriteEntity> getFavByMovieID(int id);
+    //to delete row of specific movie_id
 
     @Query("DELETE FROM favourite WHERE movie_id =:id")
     void deleteFavById(int id);
+    //get row of id
+    @Query("SELECT * FROM favourite WHERE id = :id")
+    List<FavouriteEntity> getFavouriteById(int id);
 }

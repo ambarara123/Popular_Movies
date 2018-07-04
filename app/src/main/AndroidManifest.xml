@@ -19,15 +19,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MovieActivity">
+        <activity android:name=".MovieActivity"
+            android:label="Movie Details">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.popularmovies.MainActivity" />
         </activity>
-        <activity android:name=".FavouriteActivity">
+        <activity android:name=".FavouriteActivity"
+            android:label="Favourites">
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.popularmovies.MainActivity" />
+        </activity>
+        <activity android:name=".FavouriteDetail"
+            android:label="Movie Details">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.popularmovies.FavouriteActivity" />
         </activity>
     </application>
 

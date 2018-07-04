@@ -2,6 +2,7 @@ package com.example.popularmovies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
@@ -19,8 +20,7 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.example.popularmovies.utilities.GetMovie;
-import com.example.popularmovies.utilities.UTILs;
+import com.example.popularmovies.utilities.Utils;
 import com.example.popularmovies.utilities.VolleySingleton;
 
 import org.json.JSONArray;
@@ -31,13 +31,13 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements RecyclerAdapter.ItemListener {
 
-    //declaring variables
     public static RecyclerView gridRecyclerView;
     public static RecyclerAdapter recyclerAdapter;
     public static ProgressBar progressBar;
     public static ArrayList<Movie> moviesList;
     public static ArrayList<String> images;
     public static boolean connection;
+    GridLayoutManager gridLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,37 +48,47 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
         moviesList = new ArrayList<>();
         images = new ArrayList<>();
 
-        recyclerAdapter = new RecyclerAdapter(this, moviesList, images);
-        showProgress();
+        int spanCount = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ? 3 : 2;
 
 
+        gridLayoutManager = new GridLayoutManager(this, spanCount
+                , LinearLayoutManager.VERTICAL, false);
+
+        gridRecyclerView.setLayoutManager(gridLayoutManager);
+        gridRecyclerView.setHasFixedSize(true);
 
 
-        //if no network problem
-        if (isNetworkAvailable() != false) {
-            showRecyclerView();
-            connection = true;
-            //
-           // GetMovie movieDownload = new GetMovie(this);
-           // movieDownload.execute(UTILs.API_URL + UTILs.API_KEY);
-            volleyRequest(getApplicationContext(),UTILs.API_URL+UTILs.API_KEY+"&language=en-US");
-
-
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2
-                    , LinearLayoutManager.VERTICAL, false);
-
-            gridRecyclerView.setLayoutManager(gridLayoutManager);
-            gridRecyclerView.setHasFixedSize(true);
+        //get data from saved state if it is not empty
+        if (savedInstanceState != null) {
+            moviesList = savedInstanceState.getParcelableArrayList("movie_list");
+            images = savedInstanceState.getStringArrayList("image_list");
+            recyclerAdapter = new RecyclerAdapter(this, moviesList, images);
 
             gridRecyclerView.setAdapter(recyclerAdapter);
-
         } else {
+            showProgress();
+            recyclerAdapter = new RecyclerAdapter(this, moviesList, images);
 
-            noNetworkToast();
-            connection = false;
+            //if no network problem
+            if (isNetworkAvailable() != false) {
+                showRecyclerView();
+                connection = true;
+
+                // movieDownload.execute(Utils.API_URL + Utils.API_KEY);
+                volleyRequest(getApplicationContext(), Utils.API_URL + Utils.API_KEY + "&language=en-US");
+
+                gridRecyclerView.setAdapter(recyclerAdapter);
+
+            } else {
+
+                noNetworkToast();
+                connection = false;
 //            startActivity(new Intent(MainActivity.this,FavouriteActivity.class));
 //            finish();
+            }
+
         }
+
 
     }
 
@@ -99,26 +109,31 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
         if (id == R.id.action_popular) {
             //popular sort coding will done here
             if (isNetworkAvailable() != false) {
-                //new GetMovie(getApplicationContext()).execute(UTILs.MOST_POPULAR + UTILs.API_KEY);
-                volleyRequest(getApplicationContext(),UTILs.MOST_POPULAR+UTILs.API_KEY);
+                //new GetMovie(getApplicationContext()).execute(Utils.MOST_POPULAR + Utils.API_KEY);
+                volleyRequest(getApplicationContext(), Utils.MOST_POPULAR + Utils.API_KEY);
                 //to notify data set changed
                 recyclerAdapter.notifyDataSetChanged();
             } else {
                 noNetworkToast();
+                gridRecyclerView.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
             }
         } else if (id == R.id.acrion_highestrated) {
             //highest rated coding will be done here
             if (isNetworkAvailable() != false) {
-               // new GetMovie(getApplicationContext()).execute(UTILs.HIGH_RATED+UTILs.API_KEY);
-                volleyRequest(getApplicationContext(),UTILs.HIGH_RATED+UTILs.API_KEY);
+                // new GetMovie(getApplicationContext()).execute(Utils.HIGH_RATED+Utils.API_KEY);
+                volleyRequest(getApplicationContext(), Utils.HIGH_RATED + Utils.API_KEY);
                 //to notify data set changed
                 recyclerAdapter.notifyDataSetChanged();
+
             } else {
 
-               noNetworkToast();
+                noNetworkToast();
+                gridRecyclerView.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
             }
-        }else {
-            startActivity(new Intent(MainActivity.this,FavouriteActivity.class));
+        } else {
+            startActivity(new Intent(MainActivity.this, FavouriteActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -156,26 +171,27 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
     }
 
 
-    public void noNetworkToast(){
+    public void noNetworkToast() {
 
         Toast.makeText(this, "Please Connect to a network", Toast.LENGTH_SHORT).show();
 
     }
 
 
-    public void volleyRequest(final Context context,String url){
+    public void volleyRequest(final Context context, String url) {
         //using volley instead of assync task to avoid small problems
         progressBar.setVisibility(View.VISIBLE);
         gridRecyclerView.setVisibility(View.INVISIBLE);
+        Log.d("getdata", "starts loading...");
         StringRequest request = new StringRequest(url, new Response.Listener<String>() {
 
 
             @Override
             public void onResponse(String response) {
-                MainActivity.progressBar.setVisibility(View.INVISIBLE);
-                MainActivity.gridRecyclerView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.INVISIBLE);
+                gridRecyclerView.setVisibility(View.VISIBLE);
                 //to be removed after completing project
-                Log.d("result",response);
+                Log.d("result", response);
 
                 if (MainActivity.connection) {
                     MainActivity.moviesList = new ArrayList<>();
@@ -196,8 +212,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
                             movie.setPosterPath(JSONMovie.getString("poster_path"));
 
 
-                            MainActivity.images.add(UTILs.IMAGE_URL +
-                                    UTILs.IMAGE_SIZE +
+                            MainActivity.images.add(Utils.IMAGE_URL +
+                                    Utils.IMAGE_SIZE +
                                     JSONMovie.getString("poster_path"));
 
 
@@ -211,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
                     MainActivity.recyclerAdapter.notifyDataSetChanged();
                 }
                 //if no network found
-                else{
+                else {
 
                     Toast.makeText(context, "Please Connect to a Network", Toast.LENGTH_LONG).show();
                 }
@@ -223,7 +239,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.I
                 Toast.makeText(context, error.toString(), Toast.LENGTH_LONG).show();
             }
         });
-        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(request,"req");
+        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(request, "req");
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("movie_list", moviesList);
+        outState.putStringArrayList("image_list", images);
+    }
 }

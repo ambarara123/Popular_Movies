@@ -21,7 +21,7 @@
                 android:background="@android:color/holo_blue_light">
 
                 <TextView
-                    android:id="@+id/txtTitle"
+                    android:id="@+id/txtTitlefav"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -32,7 +32,7 @@
                     android:textSize="40sp" />
 
                 <ImageView
-                    android:id="@+id/favButton"
+                    android:id="@+id/favButtonfav"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="right"
@@ -51,7 +51,7 @@
                 android:padding="10dp">
 
                 <ImageView
-                    android:id="@+id/detailImageView"
+                    android:id="@+id/detailImageViewfav"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -65,7 +65,7 @@
                     android:paddingLeft="5dp">
 
                     <TextView
-                        android:id="@+id/txtReleaseDate"
+                        android:id="@+id/txtReleaseDatefav"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/release_date"
@@ -78,7 +78,7 @@
                         android:background="#FFFFFF" />
 
                     <TextView
-                        android:id="@+id/txtUserRating"
+                        android:id="@+id/txtUserRatingfav"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/userrating"
@@ -97,59 +97,12 @@
                 />
 
             <TextView
-                android:id="@+id/txtDescription"
+                android:id="@+id/txtDescriptionfav"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
                 android:textColor="#FFFFFF"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="cursive"
-                android:layout_marginTop="20dp"
-                android:text="@string/trailers"
-                android:textColor="@color/colorPrimary"
-                android:textSize="30sp"
-                />
-
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/trailerRecycler"
-                android:layout_marginTop="5dp"
-                android:background="#FFFFFF"></android.support.v7.widget.RecyclerView>
-
-            <ProgressBar
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:id="@+id/movieProgress"
-                android:layout_gravity="center_horizontal"
-                android:visibility="invisible"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="cursive"
-                android:text="@string/reviews"
-                android:textColor="@color/colorPrimary"
-                android:textSize="30sp"
-                />
-            <ProgressBar
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:id="@+id/movieProgress2"
-                android:layout_gravity="center_horizontal"
-                android:visibility="invisible"/>
-
-
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/reviewRecycler"
-                android:background="#FFFFFF"></android.support.v7.widget.RecyclerView>
-
-
 
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

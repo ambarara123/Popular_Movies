@@ -103,8 +103,8 @@ public class GetMovie extends AsyncTask<String, Void,String> {
                     movie.setVoteAverage(JSONMovie.getString("vote_average"));
                     movie.setPosterPath(JSONMovie.getString("poster_path"));
 
-                    MainActivity.images.add(UTILs.IMAGE_URL +
-                            UTILs.IMAGE_SIZE +
+                    MainActivity.images.add(Utils.IMAGE_URL +
+                            Utils.IMAGE_SIZE +
                             JSONMovie.getString("poster_path"));
 
                     MainActivity.moviesList.add(movie);
@@ -150,8 +150,8 @@ public class GetMovie extends AsyncTask<String, Void,String> {
                         movie.setVoteAverage(JSONMovie.getString("vote_average"));
                         movie.setPosterPath(JSONMovie.getString("poster_path"));
 
-                        MainActivity.images.add(UTILs.IMAGE_URL +
-                                UTILs.IMAGE_SIZE +
+                        MainActivity.images.add(Utils.IMAGE_URL +
+                                Utils.IMAGE_SIZE +
                                 JSONMovie.getString("poster_path"));
 
                         MainActivity.moviesList.add(movie);

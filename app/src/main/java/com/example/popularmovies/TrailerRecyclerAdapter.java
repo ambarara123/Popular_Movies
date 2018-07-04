@@ -6,16 +6,14 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.popularmovies.utilities.TrailerModel;
-import com.example.popularmovies.utilities.UTILs;
+import com.example.popularmovies.utilities.Utils;
 
 import java.util.ArrayList;
 
@@ -44,9 +42,9 @@ public class TrailerRecyclerAdapter extends RecyclerView.Adapter<TrailerRecycler
     public void onBindViewHolder(@NonNull TrailerViewHolder holder, int position) {
             holder.trailerName.setText(trailers.get(position).getTrailerName());
             //building youtube url with base and id
-            final String youtubeUrl = UTILs.YOUTUBE_URL + trailers.get(position).getValue();
+            final String youtubeUrl = Utils.YOUTUBE_URL + trailers.get(position).getValue();
 
-        Log.d("name",trailers.get(position).getTrailerName());
+       // Log.d("name",trailers.get(position).getTrailerName());
 
             holder.trailerLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -75,7 +73,7 @@ public class TrailerRecyclerAdapter extends RecyclerView.Adapter<TrailerRecycler
 
     @Override
     public int getItemCount() {
-Log.d("length",String.valueOf(trailers.size()));
+ //Log.d("length",String.valueOf(trailers.size()));
         return MovieActivity.trailers.size();
 
     }
